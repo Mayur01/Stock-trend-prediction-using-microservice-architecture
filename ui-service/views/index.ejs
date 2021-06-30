@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600|Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="../css/spur.css">
+    <title>Stock Prediction using Microservices</title>
+</head>
+
+<body>
+    <div class="dash">
+        <div class="dash-nav dash-nav-dark">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="index" class="spur-logo"><i class="fas fa-bolt"></i> <span>Welcome</span></a>
+            </header>
+            <nav class="dash-nav-list">
+                <a href="index" class="dash-nav-item">
+                    <i class="fas fa-home"></i> Dashboard </a>
+
+                <a href="<%=db_url%>" class="dash-nav-item">
+                    <i class="fas fa-user"></i> Add New User? </a>
+                
+                <div class="dash-nav-dropdown">
+                    <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+                        <i class="fas fa-info"></i> Team 07 </a>
+                    <div class="dash-nav-dropdown-menu">
+                        <a href="https://chaitanya1731.github.io/" target="_blank" class="dash-nav-dropdown-item">Chaitanya K</a>
+                        <a href="" target="_blank" class="dash-nav-dropdown-item">Prathamesh W</a>
+                        <a href="" target="_blank" class="dash-nav-dropdown-item">Mayur K</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="dash-app">
+            <header class="dash-toolbar">    
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <div class="container text-center">
+                  <h1>Stock Trend Prediction using Microservices</h1>
+                </div>
+            </header>
+            <main class="dash-content">
+                <div class="container-fluid">
+                    <h1 class="dash-title">Users Information</h1>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="card spur-card">
+                                <div class="card-header">
+                                    <div class="spur-card-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="spur-card-title">Users List </div>
+                                </div>
+                                <div class="card-body ">
+                                    <table id="usersTable" class="table table-hover table-in-card">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% results.forEach((result, i) => { %>
+                                        <tr>
+                                            <th scope="row"><%=i+1 %></th>
+                                            <td><a href="userDetails?Firstname=<%=result.Firstname %>"><%=result.Firstname %> <%=result.Lastname %></a></td>
+                                        </tr>
+                                        <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card spur-card">
+                                <div class="card-header">
+                                    <div class="spur-card-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="spur-card-title"> User Details </div>
+                                </div>
+                                <div class="card-body ">
+                                    <form class="form-inline" onSubmit="return submitForm(username.value)">
+                                        <table>
+                                            <tr>
+                                                <td style="width: 30%;">
+                                                    <div class="form-group mb-2">
+                                                        <span class="form-control-plaintext">Username</span>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 40%;">
+                                                    <div class="form-group mx-sm-3 mb-2">
+                                                        <input type="text" class="form-control" id="username" placeholder="Enter Username" required>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%;"></td>
+                                                <td style="width: 40%;">
+                                                    <!-- <div class="alert alert-danger" role="alert"><span id="usernameError"></span> </div> -->
+                                                    <span id="usernameError" class="badge badge-danger text-right"></span>
+                                                </td>
+                                                <td style="width: 30%;"></td>
+                                            </tr>
+                                        </table>
+                                    </form> 
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="../js/spur.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="js/index-js.js"></script>
+    
+</body>
+
+</html>

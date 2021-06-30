@@ -1,0 +1,33 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: prediction-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: prediction-service-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource 
+    resource: 
+      name: cpu 
+      targetAverageUtilization: 90
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ui-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ui-service-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource 
+    resource: 
+      name: cpu 
+      targetAverageUtilization: 10

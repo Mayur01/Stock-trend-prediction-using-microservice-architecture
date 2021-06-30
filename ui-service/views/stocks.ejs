@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600|Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="../css/spur.css">
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+    <title>Stock Prediction using Microservices</title>
+</head>
+
+<body>
+<script>
+    let stockname = <%-JSON.stringify(symbol)%>;
+    let stockprice = <%-JSON.stringify(stockMetadata.regularMarketPrice)%>;
+    let firstname = <%-JSON.stringify(firstname)%>;
+    let currentChartData = <%-JSON.stringify(chart1_data)%>;
+    let pastChartData = <%-JSON.stringify(chart2_data)%>;
+</script>
+    <div class="dash">
+        <div class="dash-nav dash-nav-dark">
+            <header>
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="#" class="spur-logo"><span>Stock Details</span></a>
+                <!-- <a href="index.ejs" class="spur-logo"><i class="fas fa-bolt"></i> <span>Stock Details</span></a> -->
+            </header>
+            <nav class="dash-nav-list">
+                <a href="index" class="dash-nav-item">
+                    <i class="fas fa-home"></i> Dashboard </a>
+                <div class="dash-nav-dropdown">
+                    <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+                        <i class="fab fa-bitcoin"></i> Stocks Owned </a>
+                    <div id="stocksOwned" class="dash-nav-dropdown-menu">
+                        <% for (const [key, value] of Object.entries(results.Stocks)) { %>
+                        <a href="./stocks?Firstname=<%=firstname%>&stockname=<%=key%>" class="dash-nav-dropdown-item"><%=key%></a>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="dash-nav-dropdown">
+                    <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+                        <i class="fas fa-info"></i> Team 07 </a>
+                    <div class="dash-nav-dropdown-menu">
+                        <a href="https://chaitanya1731.github.io/" target="_blank" class="dash-nav-dropdown-item">Chaitanya K</a>
+                        <a href="" target="_blank" class="dash-nav-dropdown-item">Prathamesh W</a>
+                        <a href="" target="_blank" class="dash-nav-dropdown-item">Mayur K</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="dash-app">
+            <header class="dash-toolbar">    
+                <a href="#!" class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <div class="container text-center">
+                  <h1>Stock Trend Prediction using Microservices</h1>
+                </div>
+            </header>
+            <main class="dash-content">
+                <div class="container-fluid">
+                    <div class="row dash-row">
+                        <div class="col-xl-4">
+                            <div class="stats stats-dark">
+                                <div>
+                                    <table id="metadata1">
+                                        <tr>
+                                            <td><h5>Display Name</h5></td>
+                                            <td><h5 id="displayName"><%=stockMetadata.displayName%></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Exchange Name</h5></td>
+                                            <td><h5 id="fullExchangeName"><%=stockMetadata.fullExchangeName%></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Currency & Region</h5></td>
+                                            <td><h5 id="currency"><%=stockMetadata.currency%> - <%=stockMetadata.region%></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Market Volume</h5></td>
+                                            <td><h5 id="volume"><%=stockMetadata.regularMarketVolume%></h5></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div class="stats stats-dark">
+                                <div>
+                                    <table id="metadata1">
+                                        <tr>
+                                            <td><h5>Market High</h5></td>
+                                            <td><h5 id="regMarketHigh">$<%=stockMetadata.regularMarketDayHigh%></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Market Low</h5></td>
+                                            <td><h5 id="regMarketLow">$<%=stockMetadata.regularMarketDayLow%></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>52 Week High</h5></td>
+                                            <td><h5 id="fiftyTwoWeekHigh">$<%=stockMetadata.fiftyTwoWeekHigh%></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>52 Week Low</h5></td>
+                                            <td><h5 id="fiftyTwoWeekLow">$<%=stockMetadata.fiftyTwoWeekLow%></h5></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div id="abc" class="stats stats-dark">
+                                <h3 class="stats-title" id="realtimeStockPrice">Realtime Price - <%=symbol%></h3>
+                                <h5 class="stats-change" id="longName"><%=stockMetadata.longName%></h5>
+                                <div class="stats-content">
+                                    <div class="stats-icon">
+                                        <i class="fab fa-bitcoin"></i>
+                                    </div>
+                                    <div class="stats-data">
+                                        <div id="stockRate" class="stats-number">$<%=stockMetadata.regularMarketPrice%></div>
+                                        <div class="stats-change">
+                                            <span id="percentChange" class="stats-percentage"></span>
+                                            <span class="stats-timeframe"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card spur-card">
+                                <div class="card-header">
+                                    <div class="spur-card-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="spur-card-title"> Current Chart - Today </div>
+                                </div>
+                                <div class="card-body spur-card-body-chart">
+                                  <div id="chartContainer1" style="height: 450px; width: 100%;">
+                                      <img src="https://i.imgur.com/fXUIBfi.gif" alt="Chart will Render Here..."/>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card spur-card">
+                                <div class="card-header">
+                                    <div class="spur-card-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="spur-card-title"> Past Chart </div>
+                                </div>
+                                <div class="card-body spur-card-body-chart">
+                                    <div id="chartContainer2" style="height: 450px; width: 100%;">
+                                        <img src="https://i.imgur.com/fXUIBfi.gif" alt="Chart will Render Here..."/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card spur-card">
+                                <div class="card-header">
+                                    <div class="spur-card-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="spur-card-title"> Prediction Chart - Next 30 Day Prediction </div>
+                                </div>
+                                <div class="card-body spur-card-body-chart">
+                                  <div id="chartContainer3" style="height: 450px; width: 100%;">
+                                      <img src="https://i.imgur.com/fXUIBfi.gif" alt="Chart will Render Here..."/>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="../js/spur.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="js/stocks-js.js"></script>
+</body>
+<style>
+    img{
+        display: block;
+        margin: auto;
+    }
+    #metadata1, #metadata2{
+        table-layout: auto;
+        width: 100%;
+    }
+</style>
+</html>

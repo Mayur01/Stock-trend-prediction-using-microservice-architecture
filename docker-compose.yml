@@ -1,0 +1,66 @@
+version: "3"
+
+services: 
+  database-service:
+    container_name: db-service
+    image: iamchaitanyakulkarni/dbservice:1
+    restart: always
+    build: 
+      context: ./database-service
+      dockerfile: Dockerfile
+    ports: 
+      - "3000:3000"
+    links: 
+      - mongo
+    environment: 
+        - MONGO_URL=mongodb://mongo:27017/StockPrediction
+
+  stock-service:
+    container_name: stock-service
+    image: iamchaitanyakulkarni/stockservice:2
+    restart: always
+    build: 
+      context: ./stock-service
+      dockerfile: Dockerfile
+    ports: 
+      - "4000:4000"
+    links: 
+      - mongo
+    environment: 
+        - MONGO_URL=mongodb://mongo:27017/StockPrediction
+
+  ui-service:
+    container_name: ui-service
+    image: iamchaitanyakulkarni/uiservice:4
+    restart: always
+    build: 
+      context: ./ui-service
+      dockerfile: Dockerfile
+    ports: 
+      - "5000:5000"
+    external_links: 
+      - stock-service
+      - db-service
+      - prediction-service
+    environment: 
+        - STOCKS_URL=http://stock-service:4000
+        - USERS_URL=http://db-service:3000
+        - PREDICTION_URL=prediction-service
+    
+  prediction-service:
+    container_name: prediction-service
+    image: iamchaitanyakulkarni/predictionservice:3
+    restart: always
+    build: 
+      context: ./stock_prediction
+      dockerfile: Dockerfile
+    ports: 
+      - "5050:5050"
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
